@@ -21,7 +21,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         yelpTableView.rowHeight = UITableViewAutomaticDimension
         yelpTableView.estimatedRowHeight = 120
         
-        Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: "Restaurants", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
             self.yelpTableView.reloadData()
@@ -31,8 +31,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
                     print(business.address!)
                 }
             }
-            
-            }
+          }
         )
         
         /* Example of Yelp search with more search options specified
@@ -77,9 +76,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
-        
-        var categories = filters["categories"] as? [String]
-        Business.searchWithTerm(term: "Restaurants", sort: nil, categories: categories, deals: nil,
+        let categories = filters["categories"] as? [String]
+        let sort = filters["sort"] as? YelpSortMode
+        let deals = filters["deals_filter"] as? Bool
+        let distance = filters["radius_filter"] as? Int
+        Business.searchWithTerm(term: "Restaurants", sort: sort, categories: categories, distance: distance, deals: deals,
                                 completion: ({businesses, error -> Void in
                 self.businesses = businesses
                 self.yelpTableView.reloadData()
