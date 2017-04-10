@@ -21,6 +21,17 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     var switchStates = [IndexPath:Bool]()
     weak var delegate: FiltersViewControllerDelegate?
     
+    //Checkers to see if a section has been selected
+    var distanceSelected: Bool! = false
+    var sortSelected: Bool! = false
+    var categoriesExpanded: Bool! = false
+    
+    //default values for filters
+    var defaultDistance: Int! = 8046
+    var defaultDistanceText: String! = "Auto"
+    var defaultSort: Int! = 0
+    var defaultSortText: String! = "Best Match"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         filterTableView.delegate = self
@@ -57,11 +68,9 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 1:
             return "Distance"
         case 2:
-            return ""
-        case 3:
-            return "Cuisine"
+            return "Sort By"
         default:
-            return ""
+            return "Cateogry"
         }
     }
     
@@ -70,11 +79,11 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         case 0:
             return 1
         case 1:
-            return distances.count
+            return distanceSelected! ? distances.count : 1
         case 2:
-            return sorts.count
+            return sortSelected! ? sorts.count : 1
         case 3:
-            return categories.count
+            return categoriesExpanded! ? categories.count : 5
         default:
             return 0
         }
@@ -86,18 +95,69 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             case 0:
                 cell.switchLabel.text = "Offering Deals"
             case 1:
-                cell.switchLabel.text = distances[indexPath.row]["name"]
+                if indexPath.row == 0 && !distanceSelected {
+                    cell.switchLabel.text = defaultDistanceText
+                } else {
+                    cell.switchLabel.text = distances[indexPath.row]["name"]
+                }
+            
             case 2:
-                cell.switchLabel.text = sorts[indexPath.row]["name"]
-            case 3:
-                cell.switchLabel.text = categories[indexPath.row]["name"]
+                if indexPath.row == 0 && !sortSelected {
+                    cell.switchLabel.text = defaultSortText
+                } else {
+                    cell.switchLabel.text = sorts[indexPath.row]["name"]
+
+                }
             default:
-                cell.switchLabel.text = "Something Funny with This Label!"
+                if indexPath.row == 4 && !categoriesExpanded {
+                    cell.switchLabel.text = "See All"
+                    cell.switchLabel.textColor = UIColor.lightGray
+                    cell.onSwitch.isHidden = true
+                } else {
+                    cell.switchLabel.text = categories[indexPath.row]["name"]
+                    cell.switchLabel.textColor = UIColor.black
+                    cell.onSwitch.isHidden = false
+                }
         }
         cell.delegate = self
         cell.onSwitch.isOn = switchStates[indexPath] ?? false
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            switch distanceSelected {
+                case true:
+                    defaultDistance = Int(distances[indexPath.row]["code"]!)
+                    defaultDistanceText = distances[indexPath.row]["name"]
+                    distanceSelected = false
+                    filterTableView.reloadSections(IndexSet([indexPath.section]), with: .automatic)
+                default:
+                    distanceSelected = true
+                    filterTableView.reloadSections(IndexSet([indexPath.section]), with: .automatic)
+            }
+        } else if indexPath.section == 2 {
+            switch sortSelected {
+                case true:
+                    defaultSort = Int(sorts[indexPath.row]["code"]!)
+                    defaultSortText = sorts[indexPath.row]["name"]
+                    sortSelected = false
+                    filterTableView.reloadData()
+                default:
+                    sortSelected = true
+                    filterTableView.reloadSections(IndexSet([indexPath.section]), with: .automatic)
+            }
+        } else if indexPath.section == 3 {
+            switch categoriesExpanded {
+                case true:
+                    categoriesExpanded = false
+                    filterTableView.reloadSections(IndexSet([indexPath.section]), with: .automatic)
+                default:
+                    categoriesExpanded = true
+                    filterTableView.reloadData()
+            }
+        }
     }
     
    
