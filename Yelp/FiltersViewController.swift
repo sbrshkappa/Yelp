@@ -27,10 +27,16 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         filterTableView.dataSource = self
         filterTableView.rowHeight = UITableViewAutomaticDimension
         filterTableView.estimatedRowHeight = 40
+        filterTableView.backgroundColor = UIColor.clear
 
         categories = yelpCategories()
         sorts = yelpSorts()
         distances = yelpDistances()
+        
+        
+        navigationController?.navigationBar.barTintColor = UIColor.red
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         // Do any additional setup after loading the view.
     }
 
@@ -149,8 +155,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     func yelpDistances () -> [[String: String]]{
         return [["name": "Auto", "code": "8046"],
                 ["name": "0.3 miles", "code": "483"],
-                ["name": "5 miles", "code": "8046"],
-                ["name": "10 miles", "code": "16093"],
+                ["name": "5 miles", "code": "9000"],
+                ["name": "10 miles", "code": "20000"],
                 ["name": "25 miles", "code": "40000"]]
     }
     

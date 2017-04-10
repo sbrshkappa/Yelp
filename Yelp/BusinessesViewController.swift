@@ -40,6 +40,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         searchBar.delegate = self
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
+        navigationController?.navigationBar.barTintColor = UIColor.red
+        navigationController?.navigationBar.tintColor = UIColor.white
         
         
         /* Example of Yelp search with more search options specified
