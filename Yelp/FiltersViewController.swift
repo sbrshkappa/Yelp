@@ -25,6 +25,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         filterTableView.delegate = self
         filterTableView.dataSource = self
+        filterTableView.rowHeight = UITableViewAutomaticDimension
+        filterTableView.estimatedRowHeight = 40
 
         categories = yelpCategories()
         sorts = yelpSorts()

@@ -16,12 +16,17 @@ class SwitchCell: UITableViewCell {
 
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var onSwitch: UISwitch!
+    @IBOutlet weak var innerView: UIView!
     
     weak var delegate: SwitchCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        innerView.layer.cornerRadius = 8
+        innerView.layer.masksToBounds = true
+        innerView.layer.borderWidth = 2
+        innerView.layer.borderColor = UIColor.red.cgColor
         onSwitch.addTarget(self, action: #selector(switchValueChanged), for: UIControlEvents.valueChanged)
     }
 
