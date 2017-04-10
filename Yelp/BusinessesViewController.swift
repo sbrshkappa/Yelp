@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
     
@@ -14,7 +15,6 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var yelpTableView: UITableView!
     let searchBar = UISearchBar()
     var filteredBusinesses: [Business]!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,6 +22,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         yelpTableView.dataSource = self
         yelpTableView.rowHeight = UITableViewAutomaticDimension
         yelpTableView.estimatedRowHeight = 120
+        
+//        //Setting Map Properties
+//        let centerLocation = CLLocation(latitude: 37.785771, longitude: -122.406165)
+//        goToLocation(location: centerLocation)
         
         Business.searchWithTerm(term: "Restaurants", completion: { (businesses: [Business]?, error: Error?) -> Void in
             
@@ -37,8 +41,12 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
           }
         )
         
+        //Search Bar Properties
         searchBar.delegate = self
+        searchBar.placeholder = "Restaurants"
         searchBar.sizeToFit()
+        
+        //Navigation Bar Properties
         navigationItem.titleView = searchBar
         navigationController?.navigationBar.barTintColor = UIColor.red
         navigationController?.navigationBar.tintColor = UIColor.white
@@ -61,6 +69,13 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+//    //Map Methods
+//    func goToLocation(location: CLLocation){
+//        let span = MKCoordinateSpanMake(0.1, 0.1)
+//        let region = MKCoordinateRegionMake(location.coordinate, span)
+//        mapView.setRegion(region, animated: true)
+//    }
     
     //TableViewDelegates
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -95,7 +110,6 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         yelpTableView.reloadData()
     }
     
-     
      // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let navigationController = segue.destination as! UINavigationController
