@@ -86,12 +86,13 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             default:
                 cell.switchLabel.text = "Something Funny with This Label!"
         }
-//        cell.switchLabel.text = categories[indexPath.row]["name"]
         cell.delegate = self
         cell.onSwitch.isOn = switchStates[indexPath] ?? false
         
         return cell
     }
+    
+   
     
     func switchCell(switchCell: SwitchCell, didChangeValue value: Bool) {
         let indexPath = filterTableView.indexPath(for: switchCell)!
