@@ -27,6 +27,9 @@ class SwitchCell: UITableViewCell {
         innerView.layer.masksToBounds = true
         innerView.layer.borderWidth = 2
         innerView.layer.borderColor = UIColor.red.cgColor
+        
+        onSwitch.tintColor = UIColor.red
+        onSwitch.onTintColor = UIColor.red
         onSwitch.addTarget(self, action: #selector(switchValueChanged), for: UIControlEvents.valueChanged)
     }
 
